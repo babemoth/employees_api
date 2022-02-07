@@ -1,4 +1,6 @@
-package com.example.Employees.db;
+package com.example.Employees.model;
+
+import jdk.jfr.DataAmount;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ public class Employees {
     @GeneratedValue
     @Column(name = "ID", nullable = false)
     private Long Id;
+
 
     @Column(name = "NAME")
     private String name;
