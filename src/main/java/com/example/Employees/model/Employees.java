@@ -2,19 +2,16 @@ package com.example.Employees.model;
 
 import jdk.jfr.DataAmount;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "EMPLOYEES")
 public class Employees {
 
     @javax.persistence.Id
-    @GeneratedValue
-    @Column(name = "ID", nullable = false)
-    private Long Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
 
 
     @Column(name = "NAME")
@@ -39,12 +36,13 @@ public class Employees {
 
     }
 
+
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -78,4 +76,11 @@ public class Employees {
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
     }
+
+    @Override
+    public String toString(){
+        return "Employees [id=" + id + ", name=" + name + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + ", departmentName=" + departmentName + "]";
+    }
+
+
 }

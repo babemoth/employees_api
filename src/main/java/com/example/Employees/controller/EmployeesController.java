@@ -2,72 +2,75 @@ package com.example.Employees.controller;
 
 
 import com.example.Employees.model.Employees;
-import com.example.Employees.repository.EmployeesRep;
 import com.example.Employees.service.EmployeesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class EmployeesController {
 
     @Autowired
-    private EmployeesRep employeesRep;
+    private EmployeesService employeesService;
 
-
-    //get all employees
-    public Employees findById(Long id){
-        return employeesRep.findById(id).orElse(null);
+    public void setEmployeeService(EmployeesService employeeService) {
+        this.employeesService = employeeService;
     }
 
-    //save a new employee
-    public Employees saveEmployees(Employees employees){
-        return employeesRep.save(employees);
+    @GetMapping("/api/employees")
+    public List<Employees> getEmployees() {
+        List<Employees> employees = employeesService.retrieveEmployees();
+        return employees;
     }
 
-
-    //
-    @GetMapping(value = "/employees")
-    public List<Employees> getEmployees(){
-        return employeesRep.findAll();
+    @GetMapping("/api/employees/{employeesId}")
+    public Employees getEmployees(@PathVariable(name="employeesId")Long employeesId) {
+        Employees emp = employeesService.getEmployees(employeesId);
+        System.out.println();
+        return employeesService.getEmployees(employeesId);
     }
 
-
-
-    //delete an employee
-    @GetMapping("/delete_employees")
-    public void deleteById(Long id){
-        employeesRep.deleteById(id);
+    @GetMapping("/api/create_employee")
+    public Employees createEmployee(@RequestParam String name, @RequestParam String last_name, @RequestParam String phone_number, @RequestParam String department_name){
+        Employees emp = new Employees();
+//        emp.setId(id);
+        emp.setName(name);
+        emp.setLastName(last_name);
+        emp.setPhoneNumber(phone_number);
+        emp.setDepartmentName(department_name);
+        employeesService.saveEmployees(emp);
+        System.out.println("Employee Saved Successfully ");
+        return emp;
     }
 
+    @GetMapping("/api/edit_employee")
+    public Employees editEmployee(@RequestParam Long id, @RequestParam String name, @RequestParam String last_name, @RequestParam String phone_number, @RequestParam String department_name){
+        Optional<Employees> employees = employeesService.employeeById(id);
+        Employees emp = employees.get();
+        emp.setName(name);
+        emp.setLastName(last_name);
+        emp.setPhoneNumber(phone_number);
+        emp.setDepartmentName(department_name);
+        employeesService.saveEmployees(emp);
+        System.out.println("Edit Saved Successfully ");
+        return emp;
+    }
 
-    //Create a new Note
-    @PostMapping("/employees")
-    public Employees createNote(@Valid @RequestBody Employees employees) {
-        return employeesRep.save(employees);
-
-
-//    @GetMapping("/employees")
-//    public String findAll(Model model){
-//        List<Employees> employees = employeesService.findAll();
-//        model.addAttribute("employees",employees);
-//        return "employees-list";
-//    }
+    @GetMapping("/api/update_employee_department")
+    public Employees updateEmployees(@RequestParam Long id, @RequestParam String department_name) {
+        Optional<Employees> employees = employeesService.employeeById(id);
+        Employees emp = employees.get();
+        emp.setDepartmentName(department_name);
+        System.out.println(emp.toString());
+        employeesService.saveEmployees(emp);
+        return emp;
+    }
+    @GetMapping("/api/delete_employee/{id}")
+    public void deleteEmployee(@PathVariable(name="id")Long id){
+        employeesService.deleteEmployees(id);
+        System.out.println("Employee Deleted Successfully");
+    }
 //
-//    @GetMapping
-//    public String createEmployeesForm(Employees employees){
-//        return "create-employees";
-//    }
-//
-//    @PostMapping
-//    public String createEmployees(Employees employees){
-//        employeesService.saveEmployees(employees);
-//        return "redirect/employees";
-//    }
-//        public void deleteById(Long id){
-//        employeesRep.deleteById(id);
-//    }
 }
