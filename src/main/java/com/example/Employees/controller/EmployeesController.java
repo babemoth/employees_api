@@ -1,9 +1,12 @@
 package com.example.Employees.controller;
 
 
+import com.example.Employees.exception.EmployeeNotFoundException;
 import com.example.Employees.model.Employees;
 import com.example.Employees.service.EmployeesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,23 +22,24 @@ public class EmployeesController {
         this.employeesService = employeeService;
     }
 
+    //get all employees
     @GetMapping("/api/employees")
     public List<Employees> getEmployees() {
         List<Employees> employees = employeesService.retrieveEmployees();
         return employees;
     }
 
+    //get an employee by id
     @GetMapping("/api/employees/{employeesId}")
-    public Employees getEmployees(@PathVariable(name="employeesId")Long employeesId) {
+    public Employees getEmployeesById(@PathVariable(name="employeesId")Long employeesId) {
         Employees emp = employeesService.getEmployees(employeesId);
-        System.out.println();
-        return employeesService.getEmployees(employeesId);
+        return emp;
     }
 
+    //create a new employee
     @GetMapping("/api/create_employee")
     public Employees createEmployee(@RequestParam String name, @RequestParam String last_name, @RequestParam String phone_number, @RequestParam String department_name){
         Employees emp = new Employees();
-//        emp.setId(id);
         emp.setName(name);
         emp.setLastName(last_name);
         emp.setPhoneNumber(phone_number);
@@ -45,8 +49,9 @@ public class EmployeesController {
         return emp;
     }
 
+    //edit an employee
     @GetMapping("/api/edit_employee")
-    public Employees editEmployee(@RequestParam Long id, @RequestParam String name, @RequestParam String last_name, @RequestParam String phone_number, @RequestParam String department_name){
+    public Employees editEmployee(@RequestParam Long id, @RequestParam String name, @RequestParam String last_name, @RequestParam String phone_number, @RequestParam String department_name) throws EmployeeNotFoundException {
         Optional<Employees> employees = employeesService.employeeById(id);
         Employees emp = employees.get();
         emp.setName(name);
@@ -58,6 +63,7 @@ public class EmployeesController {
         return emp;
     }
 
+    //update employee's department
     @GetMapping("/api/update_employee_department")
     public Employees updateEmployees(@RequestParam Long id, @RequestParam String department_name) {
         Optional<Employees> employees = employeesService.employeeById(id);
@@ -67,6 +73,8 @@ public class EmployeesController {
         employeesService.saveEmployees(emp);
         return emp;
     }
+
+    //delete an employee
     @GetMapping("/api/delete_employee/{id}")
     public void deleteEmployee(@PathVariable(name="id")Long id){
         employeesService.deleteEmployees(id);

@@ -1,7 +1,5 @@
 package com.example.Employees.model;
 
-import jdk.jfr.DataAmount;
-
 import javax.persistence.*;
 
 @Entity
@@ -81,6 +79,4 @@ public class Employees {
     public String toString(){
         return "Employees [id=" + id + ", name=" + name + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + ", departmentName=" + departmentName + "]";
     }
-
-
 }
