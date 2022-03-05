@@ -10,13 +10,11 @@ public interface EmployeesService {
 
     public List<Employees> retrieveEmployees();
 
-    Employees getEmployees(Long employeesId);
+    Optional<Employees> getEmployees(Long employeesId);
 
     public Employees saveEmployees(Employees employees);
 
     public String deleteEmployees(Long employeeId);
 
     public Employees updateEmployees(Long id, Employees employees);
-
-    public Optional<Employees> employeeById(Long id);
 }

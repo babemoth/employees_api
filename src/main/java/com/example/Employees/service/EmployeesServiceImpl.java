@@ -3,7 +3,10 @@ package com.example.Employees.service;
 import com.example.Employees.model.Employees;
 import com.example.Employees.repository.EmployeesRep;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,10 +27,6 @@ public class EmployeesServiceImpl implements EmployeesService {
         return employees;
     }
 
-    public Optional<Employees> employeeById(Long id) {
-            return employeesRep.findById(id);
-    }
-
     public Employees updateEmployees(Long id, Employees employees) {
         Optional<Employees> employeesById = employeesRep.findById(id);
 
@@ -45,10 +44,8 @@ public class EmployeesServiceImpl implements EmployeesService {
         return null;
     }
     @Override
-    public Employees getEmployees(Long employeesId) {
-        Optional<Employees> optEmp = employeesRep.findById(employeesId);
-        if (optEmp.isPresent()) return optEmp.get();
-        return optEmp.get();
+    public Optional<Employees> getEmployees(Long employeesId) {
+        return employeesRep.findById(employeesId);
     }
 
     @Override

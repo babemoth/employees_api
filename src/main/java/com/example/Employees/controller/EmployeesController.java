@@ -1,12 +1,10 @@
 package com.example.Employees.controller;
 
 
-import com.example.Employees.exception.EmployeeNotFoundException;
+import com.example.Employees.exception.ApiRequestException;
 import com.example.Employees.model.Employees;
 import com.example.Employees.service.EmployeesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +29,12 @@ public class EmployeesController {
 
     //get an employee by id
     @GetMapping("/api/employees/{employeesId}")
-    public Employees getEmployeesById(@PathVariable(name="employeesId")Long employeesId) {
-        Employees emp = employeesService.getEmployees(employeesId);
-        return emp;
+    public Employees getEmployeesById(@PathVariable(name="employeesId")Long employeesId){
+        Optional<Employees> emp = employeesService.getEmployees(employeesId);
+        if (emp.isPresent()) {
+            return emp.get();
+        }
+        throw new ApiRequestException("No employee with such id.");
     }
 
     //create a new employee
@@ -52,8 +53,7 @@ public class EmployeesController {
     //edit an employee
     @GetMapping("/api/edit_employee")
     public Employees editEmployee(@RequestParam Long id, @RequestParam String name, @RequestParam String last_name, @RequestParam String phone_number, @RequestParam String department_name) throws EmployeeNotFoundException {
-        Optional<Employees> employees = employeesService.employeeById(id);
-        Employees emp = employees.get();
+        Employees emp = employeesService.employeeById(id);
         emp.setName(name);
         emp.setLastName(last_name);
         emp.setPhoneNumber(phone_number);
@@ -66,8 +66,7 @@ public class EmployeesController {
     //update employee's department
     @GetMapping("/api/update_employee_department")
     public Employees updateEmployees(@RequestParam Long id, @RequestParam String department_name) {
-        Optional<Employees> employees = employeesService.employeeById(id);
-        Employees emp = employees.get();
+        Employees emp = employeesService.employeeById(id);
         emp.setDepartmentName(department_name);
         System.out.println(emp.toString());
         employeesService.saveEmployees(emp);
@@ -77,8 +76,12 @@ public class EmployeesController {
     //delete an employee
     @GetMapping("/api/delete_employee/{id}")
     public void deleteEmployee(@PathVariable(name="id")Long id){
-        employeesService.deleteEmployees(id);
-        System.out.println("Employee Deleted Successfully");
+        Optional<Employees> emp = employeesService.getEmployees(id);
+        if (emp.isPresent()) {
+            employeesService.deleteEmployees(id);
+            System.out.println("Employee Deleted Successfully");
+        }
+        throw new ApiRequestException("No employee with such id");
     }
 //
 }
