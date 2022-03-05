@@ -3,9 +3,7 @@ package com.example.Employees.service;
 import com.example.Employees.model.Employees;
 import com.example.Employees.repository.EmployeesRep;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;

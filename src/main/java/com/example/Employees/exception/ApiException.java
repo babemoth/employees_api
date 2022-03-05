@@ -10,10 +10,7 @@ public class ApiException {
     private final HttpStatus httpStatus;
     private final ZonedDateTime timestamp;
 
-    public ApiException(String msg,
-                        Throwable cause,
-                        HttpStatus httpStatus,
-                        ZonedDateTime timestamp) {
+    public ApiException(String msg, Throwable cause, HttpStatus httpStatus, ZonedDateTime timestamp) {
         this.msg = msg;
         this.cause = cause;
         this.httpStatus = httpStatus;
