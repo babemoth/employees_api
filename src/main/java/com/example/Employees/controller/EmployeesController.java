@@ -1,13 +1,10 @@
 package com.example.Employees.controller;
 
-
 import com.example.Employees.exception.ApiRequestException;
 import com.example.Employees.model.Employees;
 import com.example.Employees.service.EmployeesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.Id;
 import java.util.List;
 import java.util.Optional;
 
