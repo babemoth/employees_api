@@ -26,14 +26,8 @@ public class Employees {
     @Column(name = "DEPARTMENT_NAME")
     private String departmentName;
 
-
-    /*
-    Конструктор
-     */
     public Employees(){
-
     }
-
 
 
     public Long getId() {

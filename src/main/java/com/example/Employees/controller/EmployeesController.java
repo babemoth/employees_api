@@ -87,6 +87,4 @@ public class EmployeesController {
         }
         throw new ApiRequestException("No employee with such id");
     }
-
-//
 }
